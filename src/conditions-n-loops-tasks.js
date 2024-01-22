@@ -71,8 +71,38 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  const boardSize = 8;
+  const chessBoard = Array.from({ length: boardSize }, () =>
+    Array(boardSize).fill(false)
+  );
+  chessBoard[king.x - 1][king.y - 1] = true;
+  for (let i = 0; i < boardSize; ) {
+    if (chessBoard[queen.x - 1][i] || chessBoard[i][queen.y - 1]) {
+      return true;
+    }
+    i += 1;
+  }
+  for (let i = 1; i < boardSize; ) {
+    if (
+      (queen.x - 1 - i >= 0 &&
+        queen.y - 1 - i >= 0 &&
+        chessBoard[queen.x - 1 - i][queen.y - 1 - i]) ||
+      (queen.x - 1 - i >= 0 &&
+        queen.y - 1 + i < boardSize &&
+        chessBoard[queen.x - 1 - i][queen.y - 1 + i]) ||
+      (queen.x - 1 + i < boardSize &&
+        queen.y - 1 - i >= 0 &&
+        chessBoard[queen.x - 1 + i][queen.y - 1 - i]) ||
+      (queen.x - 1 + i < boardSize &&
+        queen.y - 1 + i < boardSize &&
+        chessBoard[queen.x - 1 + i][queen.y - 1 + i])
+    ) {
+      return true;
+    }
+    i += 1;
+  }
+  return false;
 }
 
 /**

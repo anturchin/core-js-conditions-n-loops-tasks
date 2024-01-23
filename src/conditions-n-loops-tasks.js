@@ -576,8 +576,56 @@ shuffleChar('qwerty', 10);
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const getDigitsArray = (n) => {
+    let num = n;
+    const digits = [];
+    while (num > 0) {
+      digits.unshift(num % 10);
+      num = Math.floor(num / 10);
+    }
+    return digits;
+  };
+
+  const digits = getDigitsArray(number);
+
+  let i = digits.length - 2;
+  while (i >= 0 && digits[i] >= digits[i + 1]) {
+    i -= 1;
+  }
+
+  if (i >= 0) {
+    let j = digits.length - 1;
+    while (digits[j] <= digits[i]) {
+      j -= 1;
+    }
+
+    const temp = digits[i];
+    digits[i] = digits[j];
+    digits[j] = temp;
+  } else {
+    return number;
+  }
+
+  const rightPart = [];
+  for (let k = i + 1; k < digits.length; ) {
+    rightPart.push(digits[k]);
+    k += 1;
+  }
+
+  rightPart.sort((a, b) => a - b);
+
+  let result = 0;
+  for (let k = 0; k <= i; ) {
+    result = result * 10 + digits[k];
+    k += 1;
+  }
+  for (let k = 0; k < rightPart.length; ) {
+    result = result * 10 + rightPart[k];
+    k += 1;
+  }
+
+  return result;
 }
 
 module.exports = {
